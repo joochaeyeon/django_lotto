@@ -34,20 +34,35 @@ def hello(request):
     return HttpResponse("<h1 style='color:red;'>Hello,world!</h1>")
 
 def post(request):
-
-    PostForm(request.POST) 
-
-    if form.is_valid():
-
-        lotto = form.save(commit=False)
-
-        print(type(lotto))
-        print(lotto)
-        lotto.generate()
-        return redirect('index') # urls.py의 name='index'에 해당
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            lotto = form.save(commit=False)
+            print(type(lotto))
+            print(lotto)
+            lotto.generate()
+            return redirect('index')  # urls.py의 name='index'에 해당
     else:
-        form = PostForm() # empty form
-        return render(request, "lotto/form.html", {"form": form})
+        form = PostForm()  # GET 요청인 경우 form을 초기화
+
+    return render(request, "lotto/form.html", {"form": form})
+
+
+# def post(request):
+
+#     PostForm(request.POST) 
+
+#     if form.is_valid():
+
+#         lotto = form.save(commit=False)
+
+#         print(type(lotto))
+#         print(lotto)
+#         lotto.generate()
+#         return redirect('index') # urls.py의 name='index'에 해당
+#     else:
+#         form = PostForm() # empty form
+#         return render(request, "lotto/form.html", {"form": form})
     
     
 def detail(request, lottokey): 
